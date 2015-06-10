@@ -1,0 +1,88 @@
+Initialize engine version: 5.0.2f1 (0b02744d4013)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: Intel(R) HD Graphics Family (ID=0xa16)
+    Vendor:   Intel
+    VRAM:     896 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.146 seconds
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Muddledde\Documents\Unity Projects\Rogue-like-Example\Rogue Like Example_Data\Managed\System.dll (this message is harmless)
+SoundManager void Awake
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 8.794772 ms
+SoundManager void Awake
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 758.
+Total: 1.470585 ms (FindLiveObjects: 0.131375 ms CreateObjectMapping: 0.136712 ms MarkObjects: 1.169653 ms  DeleteObjects: 0.017243 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.973507 ms
+SoundManager void Awake
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 758.
+Total: 0.880216 ms (FindLiveObjects: 0.129733 ms CreateObjectMapping: 0.083341 ms MarkObjects: 0.645382 ms  DeleteObjects: 0.020116 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.218918 ms
+SoundManager void Awake
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 755.
+Total: 0.455298 ms (FindLiveObjects: 0.064866 ms CreateObjectMapping: 0.045160 ms MarkObjects: 0.335007 ms  DeleteObjects: 0.009442 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.744831 ms
+SoundManager void Awake
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 760.
+Total: 1.290764 ms (FindLiveObjects: 0.220464 ms CreateObjectMapping: 0.113311 ms MarkObjects: 0.936871 ms  DeleteObjects: 0.018064 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.670522 ms
+SoundManager void Awake
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 762.
+Total: 0.996812 ms (FindLiveObjects: 0.133017 ms CreateObjectMapping: 0.080467 ms MarkObjects: 0.761157 ms  DeleteObjects: 0.019706 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.479617 ms
+SoundManager void Awake
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 750.
+Total: 0.917576 ms (FindLiveObjects: 0.096478 ms CreateObjectMapping: 0.045981 ms MarkObjects: 0.747198 ms  DeleteObjects: 0.025864 ms)
+
