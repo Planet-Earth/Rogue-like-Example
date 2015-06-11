@@ -11,3 +11,22 @@ K:\Users\Muddledde\Dropbox\Rogue-like Example\Temp\bin\Debug\Assembly-CSharp.dll
 K:\Users\Muddledde\Dropbox\Rogue-like Example\Temp\bin\Debug\Assembly-CSharp.dll
 K:\Users\Muddledde\Dropbox\Rogue-like Example\obj\Debug\Assembly-CSharp.dll
 K:\Users\Muddledde\Dropbox\Rogue-like Example\obj\Debug\Assembly-CSharp.dll.mdb
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\UnityEngine.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\UnityEditor.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\UnityEngine.UI.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\UnityEngine.Networking.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\UnityEngine.Analytics.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Mono.Cecil.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Unity.SerializationLogic.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Unity.DataContract.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Unity.UNetWeaver.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Unity.UNetWeaver.dll.mdb
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Unity.CecilTools.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Mono.Cecil.Pdb.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Mono.Cecil.Mdb.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Assembly-CSharp.dll.mdb
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\Temp\bin\Debug\Assembly-CSharp.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\obj\Debug\Assembly-CSharp.dll
+K:\Users\Muddledde\Documents\Unity Projects\Rogue-like Example\obj\Debug\Assembly-CSharp.dll.mdb

@@ -22,11 +22,14 @@ public class BoardManager : MonoBehaviour {
 	public Count wallCount = new Count (5,9);
 	public Count foodCount = new Count (1,5);
 	public GameObject exit;
+	public GameObject seasonTrigger;
 	public GameObject[] floorTiles;
 	public GameObject[] wallTiles;
 	public GameObject[] foodTiles;
 	public GameObject[] enemyTiles;
 	public GameObject[] outerWallTiles;
+	public GameObject[] seasonTiles;
+	public GameObject[] eventTiles;
 
 	private Transform boardHolder;
 	private List <Vector3> gridPositions = new List<Vector3>();
@@ -91,6 +94,7 @@ public class BoardManager : MonoBehaviour {
 		LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
 		int enemyCount = (int)Mathf.Log (level, 2f);
 		LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
+		Instantiate(seasonTrigger, new Vector3 (columns - 1, rows - 2, 0f), Quaternion.identity);
 		Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
 	}
 

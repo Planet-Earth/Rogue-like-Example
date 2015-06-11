@@ -9,7 +9,9 @@ using UnityEngine.UI;	//Allows us to use UI.
 		public int pointsPerFood = 10;				//Number of points to add to player food points when picking up a food object.
 		public int pointsPerSoda = 20;				//Number of points to add to player food points when picking up a soda object.
 		public int wallDamage = 1;					//How much damage a player does to a wall when chopping it.
+		public int seasonCount = 0;					//Current type of season current set
 		public Text foodText;						//UI Text to display current player food total.
+		public Text seasonText;						//UI Text to disaply current season in effect.
 		public AudioClip moveSound1;				//1 of 2 Audio clips to play when player moves.
 		public AudioClip moveSound2;				//2 of 2 Audio clips to play when player moves.
 		public AudioClip eatSound1;					//1 of 2 Audio clips to play when player collects a food object.
@@ -34,6 +36,9 @@ using UnityEngine.UI;	//Allows us to use UI.
 			
 			//Set the foodText to reflect the current player food total.
 			foodText.text = "Food: " + food;
+
+			//Set the SeasonText to reflect the current Season setting.
+			seasonText.text = "Season Check: " + seasonCount;
 			
 			//Call the Start function of the MovingObject base class.
 			base.Start ();
@@ -210,6 +215,18 @@ using UnityEngine.UI;	//Allows us to use UI.
 				
 				//Disable the soda object the player collided with.
 				other.gameObject.SetActive (false);
+			}
+
+			//Check fi the tag of the trigger collided with if the Season Event
+			else if(other.tag == "Event")
+			{
+				//Randomly Changing SeasonCount to test function during game time
+				seasonCount = Random.Range(1,4);
+
+				//Displaying result of change
+				seasonText.text = "Season Check: " + seasonCount;
+
+				other.gameObject.SetActive(false);
 			}
 		}
 		

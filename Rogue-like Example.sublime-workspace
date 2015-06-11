@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"SetA",
+				"SetActive	value"
+			],
+			[
+				"te",
+				"text	Task.*"
+			],
+			[
+				"weath",
+				"weatherText"
+			],
+			[
+				"Game",
+				"GameObject	[class]"
+			],
+			[
 				"ch",
 				"chopSound2"
 			],
@@ -52,10 +68,18 @@
 	"buffers":
 	[
 		{
-			"file": "Assets/Scripts/SoundManager.cs",
+			"file": "Assets/Scripts/GameManager.cs",
 			"settings":
 			{
-				"buffer_size": 873,
+				"buffer_size": 2048,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Scripts/BoardManager.cs",
+			"settings":
+			{
+				"buffer_size": 2736,
 				"line_ending": "Unix"
 			}
 		},
@@ -63,7 +87,7 @@
 			"file": "Assets/Scripts/Player.cs",
 			"settings":
 			{
-				"buffer_size": 10572,
+				"buffer_size": 11189,
 				"line_ending": "Unix"
 			}
 		},
@@ -84,10 +108,10 @@
 			}
 		},
 		{
-			"file": "Assets/Scripts/BoardManager.cs",
+			"file": "Assets/Scripts/SoundManager.cs",
 			"settings":
 			{
-				"buffer_size": 2543,
+				"buffer_size": 873,
 				"line_ending": "Unix"
 			}
 		}
@@ -199,6 +223,25 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"seasonTrigger",
+			"weather",
+			"season",
+			"seasonTigger",
+			"exit",
+			"seasonTrigger",
+			"season",
+			"food",
+			"gameObject",
+			"weather",
+			"food",
+			"foodTiles",
+			"floorTiles",
+			"Season",
+			"season",
+			"Weather",
+			"weather",
+			"foodText",
+			"food",
 			"degub",
 			"touchOrigin",
 			"dropbox",
@@ -210,33 +253,36 @@
 		"regex": false,
 		"replace_history":
 		[
+			"season",
+			"Season",
+			"season"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
-		"wrap": true
+		"wrap": false
 	},
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Assets/Scripts/SoundManager.cs",
+					"file": "Assets/Scripts/GameManager.cs",
 					"settings":
 					{
-						"buffer_size": 873,
+						"buffer_size": 2048,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1223,
+								1223
 							]
 						],
 						"settings":
@@ -245,25 +291,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 810.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "Assets/Scripts/Player.cs",
+					"file": "Assets/Scripts/BoardManager.cs",
 					"settings":
 					{
-						"buffer_size": 10572,
+						"buffer_size": 2736,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1679,
-								1681
+								2556,
+								2556
 							]
 						],
 						"settings":
@@ -272,13 +318,40 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1566.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+					"file": "Assets/Scripts/Player.cs",
+					"settings":
+					{
+						"buffer_size": 11189,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10104,
+								10105
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3834.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "Assets/Scripts/Enemy.cs",
 					"settings":
 					{
@@ -305,7 +378,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 4,
 					"file": "Assets/Scripts/Wall.cs",
 					"settings":
 					{
@@ -316,8 +389,8 @@
 						"selection":
 						[
 							[
-								333,
-								333
+								189,
+								189
 							]
 						],
 						"settings":
@@ -332,19 +405,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "Assets/Scripts/BoardManager.cs",
+					"buffer": 5,
+					"file": "Assets/Scripts/SoundManager.cs",
 					"settings":
 					{
-						"buffer_size": 2543,
+						"buffer_size": 873,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								182,
-								182
+								274,
+								274
 							]
 						],
 						"settings":
@@ -353,7 +426,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 54.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -394,11 +467,11 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 273.0
+		"height": 175.0
 	},
 	"replace":
 	{
-		"height": 0.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
