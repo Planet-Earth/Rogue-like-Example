@@ -124,7 +124,18 @@ using UnityEngine.UI;	//Allows us to use UI.
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
 			}
+			else if (Input.GetKeyDown(KeyCode.Space))
+			{
+				print ("Space Key was pressed!");
+				GameManager.instance.playersTurn = false;
+			}
+			else if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				GameManager.instance.GameOver();
+			}
 		}
+
+
 		
 		//AttemptMove overrides the AttemptMove function in the base class MovingObject
 		//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
@@ -229,7 +240,6 @@ using UnityEngine.UI;	//Allows us to use UI.
 				other.gameObject.SetActive(false);
 			}
 		}
-		
 		
 		//Restart reloads the scene when called.
 		private void Restart ()

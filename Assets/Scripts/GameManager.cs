@@ -62,9 +62,19 @@ public class GameManager : MonoBehaviour {
 
 	public void GameOver()
 	{
-		levelText.text = "After " + level + " days, you starved.";
-		levelImage.SetActive (true);
-		enabled = false;
+		while(Input.GetKeyDown(KeyCode.Space)==false)
+		{
+			levelText.text = "After " + level + " days, you starved.";
+			levelImage.SetActive (true);
+			enabled = false;
+		}
+
+		#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+		#else
+			Application.Quit();
+		#endif
+
 	}
 	
 	// Update is called once per frame
