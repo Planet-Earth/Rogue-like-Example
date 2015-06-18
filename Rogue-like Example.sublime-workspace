@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"RaycastHit",
+				"RaycastHit2D	[class]"
+			],
+			[
+				"Vect",
+				"Vector3	Vector2.*()"
+			],
+			[
+				"anyKey",
+				"anyKey	Input.*"
+			],
+			[
+				"EditorApplication",
+				"EditorApplication.isPlaying	[property]"
+			],
+			[
+				"Applicat",
+				"Application.Quit	*()"
+			],
+			[
+				"else",
+				"elseif	Else If"
+			],
+			[
 				"SetA",
 				"SetActive	value"
 			],
@@ -71,7 +95,7 @@
 			"file": "Assets/Scripts/GameManager.cs",
 			"settings":
 			{
-				"buffer_size": 2048,
+				"buffer_size": 2371,
 				"line_ending": "Unix"
 			}
 		},
@@ -87,7 +111,23 @@
 			"file": "Assets/Scripts/Player.cs",
 			"settings":
 			{
-				"buffer_size": 11189,
+				"buffer_size": 11946,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Scripts/Bolt.cs",
+			"settings":
+			{
+				"buffer_size": 558,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Scripts/MovingObject.cs",
+			"settings":
+			{
+				"buffer_size": 1653,
 				"line_ending": "Unix"
 			}
 		},
@@ -223,6 +263,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"players",
+			"attempt",
 			"seasonTrigger",
 			"weather",
 			"season",
@@ -266,7 +308,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -274,15 +316,15 @@
 					"file": "Assets/Scripts/GameManager.cs",
 					"settings":
 					{
-						"buffer_size": 2048,
+						"buffer_size": 2371,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1223,
-								1223
+								1318,
+								1318
 							]
 						],
 						"settings":
@@ -291,7 +333,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 810.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -308,8 +350,8 @@
 						"selection":
 						[
 							[
-								2556,
-								2556
+								1926,
+								1926
 							]
 						],
 						"settings":
@@ -318,7 +360,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1566.0,
+						"translation.y": 1368.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -328,15 +370,15 @@
 					"file": "Assets/Scripts/Player.cs",
 					"settings":
 					{
-						"buffer_size": 11189,
+						"buffer_size": 11946,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10104,
-								10105
+								6222,
+								6222
 							]
 						],
 						"settings":
@@ -345,25 +387,51 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3834.0,
+						"translation.y": 2394.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "Assets/Scripts/Enemy.cs",
+					"file": "Assets/Scripts/Bolt.cs",
 					"settings":
 					{
-						"buffer_size": 1205,
+						"buffer_size": 558,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								18,
-								18
+								363,
+								363
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Assets/Scripts/MovingObject.cs",
+					"settings":
+					{
+						"buffer_size": 1653,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1018,
+								1018
 							]
 						],
 						"settings":
@@ -378,7 +446,34 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
+					"file": "Assets/Scripts/Enemy.cs",
+					"settings":
+					{
+						"buffer_size": 1205,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								463,
+								463
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 399.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
 					"file": "Assets/Scripts/Wall.cs",
 					"settings":
 					{
@@ -405,7 +500,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 7,
 					"file": "Assets/Scripts/SoundManager.cs",
 					"settings":
 					{

@@ -19,6 +19,9 @@ using UnityEngine.UI;	//Allows us to use UI.
 		public AudioClip drinkSound1;				//1 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip gameOverSound;				//Audio clip to play when player dies.
+
+		public GameObject bolt;
+		public Vector3 boltSpawn;
 		
 		private Animator animator;					//Used to store a reference to the Player's animator component.
 		private int food;							//Used to store player food points total during level.
@@ -124,13 +127,24 @@ using UnityEngine.UI;	//Allows us to use UI.
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
 			}
+			//Keyboard Input gathered for special ability(ies)
 			else if (Input.GetKeyDown(KeyCode.Space))
 			{
+				//A simple test used to check in the input is recognized
 				print ("Space Key was pressed!");
+
+				//Creating bolt gameObject that will travel to enemy (planning to change this soon)
+				Instantiate(bolt, new Vector3 (boltSpawn.x, boltSpawn.y, 0f) , Quaternion.identity);
+
+				//Bolt.AttemptMove <T> (xDir, yDir);
+
+				//Ensuring that the turn ends for the player's chosen action
 				GameManager.instance.playersTurn = false;
 			}
+			//A means for the player to exit the application
 			else if (Input.GetKeyDown(KeyCode.Escape))
 			{
+				//Ending game
 				GameManager.instance.GameOver();
 			}
 		}

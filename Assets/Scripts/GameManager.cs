@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -60,21 +60,20 @@ public class GameManager : MonoBehaviour {
 		doingSetup = false;
 	}
 
+	//Ending game session
 	public void GameOver()
 	{
-		while(Input.GetKeyDown(KeyCode.Space)==false)
-		{
-			levelText.text = "After " + level + " days, you starved.";
-			levelImage.SetActive (true);
-			enabled = false;
-		}
+		levelText.text = "After " + level + " days, you starved.";			//Displaying player's length of life
+		levelImage.SetActive (true);										//Executing level
+		enabled = false;													//Ending something
 
+		//Checking if within the Editor
 		#if UNITY_EDITOR
 			UnityEditor.EditorApplication.isPlaying = false;
+		//Else, if in any other medium (PC, Android, iOS, etc)
 		#else
 			Application.Quit();
 		#endif
-
 	}
 	
 	// Update is called once per frame
