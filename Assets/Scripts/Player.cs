@@ -9,7 +9,6 @@ using UnityEngine.UI;	//Allows us to use UI.
 		public int pointsPerFood = 10;				//Number of points to add to player food points when picking up a food object.
 		public int pointsPerSoda = 20;				//Number of points to add to player food points when picking up a soda object.
 		public int wallDamage = 1;					//How much damage a player does to a wall when chopping it.
-		public int seasonCount = 0;					//Current type of season current set
 		public Text foodText;						//UI Text to display current player food total.
 		public Text seasonText;						//UI Text to disaply current season in effect.
 		public AudioClip moveSound1;				//1 of 2 Audio clips to play when player moves.
@@ -22,9 +21,11 @@ using UnityEngine.UI;	//Allows us to use UI.
 
 		public GameObject bolt;
 		public Vector3 boltSpawn;
+		public Bolt boltScriptAccess;
 		
 		private Animator animator;					//Used to store a reference to the Player's animator component.
 		private int food;							//Used to store player food points total during level.
+		private int seasonCount;					//Used to store player season state during level.
 		private Vector2 touchOrigin = -Vector2.one;	//Used to store location of screen touch origin for mobile controls.
 		
 		
@@ -36,6 +37,9 @@ using UnityEngine.UI;	//Allows us to use UI.
 			
 			//Get the current food point total stored in GameManager.instance between levels.
 			food = GameManager.instance.playerFoodPoints;
+
+			//Get the current state of season stored in GameManager.instance between levels.
+			seasonCount = GameManager.instance.seasonState;
 			
 			//Set the foodText to reflect the current player food total.
 			foodText.text = "Food: " + food;
@@ -53,6 +57,7 @@ using UnityEngine.UI;	//Allows us to use UI.
 		{
 			//When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
 			GameManager.instance.playerFoodPoints = food;
+			GameManager.instance.seasonState = seasonCount;
 		}
 		
 		
@@ -134,12 +139,19 @@ using UnityEngine.UI;	//Allows us to use UI.
 				print ("Space Key was pressed!");
 
 				//Creating bolt gameObject that will travel to enemy (planning to change this soon)
-				Instantiate(bolt, new Vector3 (boltSpawn.x, boltSpawn.y, 0f) , Quaternion.identity);
+				GameObject boltInstance = Instantiate(bolt, new Vector3 (boltSpawn.x, boltSpawn.y, 0f) , Quaternion.identity) as GameObject;
+				boltScriptAccess = boltInstance.GetComponent<Bolt>();
 
-				//Bolt.AttemptMove <T> (xDir, yDir);
+				print("Bolt Instantiated");
+				//Debug.Break();
+
+				boltScriptAccess.MoveBolt(0,6);
+				print("Before SetActive(false)");
+				//boltInstance.gameObject.SetActive(false);
 
 				//Ensuring that the turn ends for the player's chosen action
 				GameManager.instance.playersTurn = false;
+				print("After turn ends");
 			}
 			//A means for the player to exit the application
 			else if (Input.GetKeyDown(KeyCode.Escape))

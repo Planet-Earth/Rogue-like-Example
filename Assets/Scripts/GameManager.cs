@@ -10,12 +10,14 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance = null;
 	public BoardManager boardScript;
 	public int playerFoodPoints = 100;
+	public int seasonState;									//Current season set
 	[HideInInspector] public bool playersTurn = true;
 
 	private Text levelText;
 	private GameObject levelImage;
 	private int level = 1;
 	private List<Enemy> enemies;
+	private Bolt bolt;
 	private bool enemiesMoving;
 	private bool doingSetup;
 

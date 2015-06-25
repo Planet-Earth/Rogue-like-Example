@@ -22,13 +22,16 @@ public abstract class MovingObject : MonoBehaviour {
 	{
 		Vector2 start = transform.position;
 		Vector2 end = start + new Vector2 (xDir, yDir);
-
+		print("boxCollider.enabled=false");
 		boxCollider.enabled = false;
+		print("Physics2D");
 		hit = Physics2D.Linecast (start, end, blockingLayer);
+		print("boxCollider.enabled=true");
 		boxCollider.enabled = true;
-
+		print("bool Move, before SmoothMovement");
 		if (hit.transform == null)
 		{
+			print(hit.transform);
 			StartCoroutine(SmoothMovement (end));
 			return true;
 		}
@@ -38,6 +41,7 @@ public abstract class MovingObject : MonoBehaviour {
 
 	protected IEnumerator SmoothMovement (Vector3 end)
 	{
+		print("In SmoothMovement");
 		float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
 		while (sqrRemainingDistance > float.Epsilon)
@@ -52,6 +56,7 @@ public abstract class MovingObject : MonoBehaviour {
 	protected virtual void AttemptMove <T> (int xDir, int yDir)
 		where T : Component
 	{
+		print("void AttemptMove");
 		RaycastHit2D hit;
 		bool canMove = Move(xDir, yDir, out hit);
 

@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"season",
+				"seasonCount"
+			],
+			[
+				"seas",
+				"seasonCount"
+			],
+			[
 				"RaycastHit",
 				"RaycastHit2D	[class]"
 			],
@@ -95,7 +103,7 @@
 			"file": "Assets/Scripts/GameManager.cs",
 			"settings":
 			{
-				"buffer_size": 2371,
+				"buffer_size": 2445,
 				"line_ending": "Unix"
 			}
 		},
@@ -103,15 +111,18 @@
 			"file": "Assets/Scripts/BoardManager.cs",
 			"settings":
 			{
-				"buffer_size": 2736,
+				"buffer_size": 2737,
 				"line_ending": "Unix"
 			}
 		},
 		{
+			"contents": "using UnityEngine;\nusing System.Collections;\nusing UnityEngine.UI;	//Allows us to use UI.\n\n	//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.\n	public class Player : MovingObject\n	{\n		public float restartLevelDelay = 1f;		//Delay time in seconds to restart level.\n		public int pointsPerFood = 10;				//Number of points to add to player food points when picking up a food object.\n		public int pointsPerSoda = 20;				//Number of points to add to player food points when picking up a soda object.\n		public int wallDamage = 1;					//How much damage a player does to a wall when chopping it.\n		public Text foodText;						//UI Text to display current player food total.\n		public Text seasonText;						//UI Text to disaply current season in effect.\n		public AudioClip moveSound1;				//1 of 2 Audio clips to play when player moves.\n		public AudioClip moveSound2;				//2 of 2 Audio clips to play when player moves.\n		public AudioClip eatSound1;					//1 of 2 Audio clips to play when player collects a food object.\n		public AudioClip eatSound2;					//2 of 2 Audio clips to play when player collects a food object.\n		public AudioClip drinkSound1;				//1 of 2 Audio clips to play when player collects a soda object.\n		public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.\n		public AudioClip gameOverSound;				//Audio clip to play when player dies.\n\n		public GameObject bolt;\n		public Vector3 boltSpawn;\n		public Bolt boltScriptAccess;\n		\n		private Animator animator;					//Used to store a reference to the Player's animator component.\n		private int food;							//Used to store player food points total during level.\n		private int seasonCount;					//Used to store player season state during level.\n		private Vector2 touchOrigin = -Vector2.one;	//Used to store location of screen touch origin for mobile controls.\n		\n		\n		//Start overrides the Start function of MovingObject\n		protected override void Start ()\n		{\n			//Get a component reference to the Player's animator component\n			animator = GetComponent<Animator>();\n			\n			//Get the current food point total stored in GameManager.instance between levels.\n			food = GameManager.instance.playerFoodPoints;\n\n			//Get the current state of season stored in GameManager.instance between levels.\n			seasonCount = GameManager.instance.seasonState;\n			\n			//Set the foodText to reflect the current player food total.\n			foodText.text = \"Food: \" + food;\n\n			//Set the SeasonText to reflect the current Season setting.\n			seasonText.text = \"Season Check: \" + seasonCount;\n			\n			//Call the Start function of the MovingObject base class.\n			base.Start ();\n		}\n		\n		\n		//This function is called when the behaviour becomes disabled or inactive.\n		private void OnDisable ()\n		{\n			//When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.\n			GameManager.instance.playerFoodPoints = food;\n			GameManager.instance.seasonState = seasonCount;\n		}\n		\n		\n		private void Update ()\n		{\n			//If it's not the player's turn, exit the function.\n			if(!GameManager.instance.playersTurn) return;\n			\n			int horizontal = 0;  	//Used to store the horizontal move direction.\n			int vertical = 0;		//Used to store the vertical move direction.\n			\n			//Check if we are running either in the Unity editor or in a standalone build.\n			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER\n			\n			//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction\n			horizontal = (int) (Input.GetAxisRaw (\"Horizontal\"));\n			\n			//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction\n			vertical = (int) (Input.GetAxisRaw (\"Vertical\"));\n			\n			//Check if moving horizontally, if so set vertical to zero.\n			if(horizontal != 0)\n			{\n				vertical = 0;\n			}\n			//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone\n			#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE\n			\n			//Check if Input has registered more than zero touches\n			if (Input.touchCount > 0)\n			{\n				//Store the first touch detected.\n				Touch myTouch = Input.touches[0];\n				\n				//Check if the phase of that touch equals Began\n				if (myTouch.phase == TouchPhase.Began)\n				{\n					//If so, set touchOrigin to the position of that touch\n					touchOrigin = myTouch.position;\n				}\n				\n				//If the touch phase is not Began, and instead is equal to Ended and the x of touchOrigin is greater or equal to zero:\n				else if (myTouch.phase == TouchPhase.Ended && touchOrigin.x >= 0)\n				{\n					//Set touchEnd to equal the position of this touch\n					Vector2 touchEnd = myTouch.position;\n					\n					//Calculate the difference between the beginning and end of the touch on the x axis.\n					float x = touchEnd.x - touchOrigin.x;\n					\n					//Calculate the difference between the beginning and end of the touch on the y axis.\n					float y = touchEnd.y - touchOrigin.y;\n					\n					//Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.\n					touchOrigin.x = -1;\n					\n					//Check if the difference along the x axis is greater than the difference along the y axis.\n					if (Mathf.Abs(x) > Mathf.Abs(y))\n						//If x is greater than zero, set horizontal to 1, otherwise set it to -1\n						horizontal = x > 0 ? 1 : -1;\n					else\n						//If y is greater than zero, set horizontal to 1, otherwise set it to -1\n						vertical = y > 0 ? 1 : -1;\n				}\n			}\n			\n			#endif //End of mobile platform dependendent compilation section started above with #elif\n			//Check if we have a non-zero value for horizontal or vertical\n			if(horizontal != 0 || vertical != 0)\n			{\n				//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)\n				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.\n				AttemptMove<Wall> (horizontal, vertical);\n			}\n			//Keyboard Input gathered for special ability(ies)\n			else if (Input.GetKeyDown(KeyCode.Space))\n			{\n				//A simple test used to check in the input is recognized\n				//print (\"Space Key was pressed!\");\n\n				//Creating bolt gameObject that will travel to enemy (planning to change this soon to start at players position)\n				GameObject boltInstance = Instantiate(bolt, new Vector3 (boltSpawn.x, boltSpawn.y, 0f) , Quaternion.identity) as GameObject;\n				boltScriptAccess = boltInstance.GetComponent<Bolt>();\n\n				//print(\"Bolt Instantiated\");\n				//Debug.Break();\n\n				//Accessing MoveBolt from Bolt.cs\n				boltScriptAccess.MoveBolt(0,6);\n				//print(\"Before SetActive(false)\");\n\n				//\"Turning Off\" Instantiated bolt (Needs to be changed to Destroy soon)\n				boltInstance.gameObject.SetActive(false);\n\n				//Ensuring that the turn ends for the player's chosen action\n				GameManager.instance.playersTurn = false;\n				//print(\"After turn ends\");\n			}\n			//A means for the player to exit the application\n			else if (Input.GetKeyDown(KeyCode.Escape))\n			{\n				//Ending game\n				GameManager.instance.GameOver();\n			}\n		}\n\n\n		\n		//AttemptMove overrides the AttemptMove function in the base class MovingObject\n		//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.\n		protected override void AttemptMove <T> (int xDir, int yDir)\n		{\n			//Every time player moves, subtract from food points total.\n			food--;\n			\n			//Update food text display to reflect current score.\n			foodText.text = \"Food: \" + food;\n			\n			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.\n			base.AttemptMove <T> (xDir, yDir);\n			\n			//Hit allows us to reference the result of the Linecast done in Move.\n			RaycastHit2D hit;\n			\n			//If Move returns true, meaning Player was able to move into an empty space.\n			if (Move (xDir, yDir, out hit)) \n			{\n				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.\n				SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);\n			}\n			\n			//Since the player has moved and lost food points, check if the game has ended.\n			CheckIfGameOver ();\n			\n			//Set the playersTurn boolean of GameManager to false now that players turn is over.\n			GameManager.instance.playersTurn = false;\n		}\n		\n		\n		//OnCantMove overrides the abstract function OnCantMove in MovingObject.\n		//It takes a generic parameter T which in the case of Player is a Wall which the player can attack and destroy.\n		protected override void OnCantMove <T> (T component)\n		{\n			//Set hitWall to equal the component passed in as a parameter.\n			Wall hitWall = component as Wall;\n			\n			//Call the DamageWall function of the Wall we are hitting.\n			hitWall.DamageWall (wallDamage);\n			\n			//Set the attack trigger of the player's animation controller in order to play the player's attack animation.\n			animator.SetTrigger (\"playerChop\");\n		}\n		\n		\n		//OnTriggerEnter2D is sent when another object enters a trigger collider attached to this object (2D physics only).\n		private void OnTriggerEnter2D (Collider2D other)\n		{\n			//Check if the tag of the trigger collided with is Exit.\n			if(other.tag == \"Exit\")\n			{\n				//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).\n				Invoke (\"Restart\", restartLevelDelay);\n				\n				//Disable the player object since level is over.\n				enabled = false;\n			}\n			\n			//Check if the tag of the trigger collided with is Food.\n			else if(other.tag == \"Food\")\n			{\n				//Add pointsPerFood to the players current food total.\n				food += pointsPerFood;\n				\n				//Update foodText to represent current total and notify player that they gained points\n				foodText.text = \"+\" + pointsPerFood + \" Food: \" + food;\n				\n				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.\n				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);\n				\n				//Disable the food object the player collided with.\n				other.gameObject.SetActive (false);\n			}\n			\n			//Check if the tag of the trigger collided with is Soda.\n			else if(other.tag == \"Soda\")\n			{\n				//Add pointsPerSoda to players food points total\n				food += pointsPerSoda;\n				\n				//Update foodText to represent current total and notify player that they gained points\n				foodText.text = \"+\" + pointsPerSoda + \" Food: \" + food;\n				\n				//Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.\n				SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);\n				\n				//Disable the soda object the player collided with.\n				other.gameObject.SetActive (false);\n			}\n\n			//Check fi the tag of the trigger collided with if the Season Event\n			else if(other.tag == \"Event\")\n			{\n				//Randomly Changing SeasonCount to test function during game time\n				seasonCount = Random.Range(1,4);\n\n				//Displaying result of change\n				seasonText.text = \"Season Check: \" + seasonCount;\n\n				other.gameObject.SetActive(false);\n			}\n		}\n		\n		//Restart reloads the scene when called.\n		private void Restart ()\n		{\n			//Load the last scene loaded, in this case Main, the only scene in the game.\n			Application.LoadLevel (Application.loadedLevel);\n		}\n		\n		\n		//LoseFood is called when an enemy attacks the player.\n		//It takes a parameter loss which specifies how many points to lose.\n		public void LoseFood (int loss)\n		{\n			//Set the trigger for the player animator to transition to the playerHit animation.\n			animator.SetTrigger (\"playerHit\");\n			\n			//Subtract lost food points from the players total.\n			food -= loss;\n			\n			//Update the food display with the new total.\n			foodText.text = \"-\"+ loss + \" Food: \" + food;\n			\n			//Check to see if game has ended.\n			CheckIfGameOver ();\n		}\n		\n		\n		//CheckIfGameOver checks if the player is out of food points and if so, ends the game.\n		private void CheckIfGameOver ()\n		{\n			//Check if food point total is less than or equal to zero.\n			if (food <= 0) \n			{\n				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.\n				SoundManager.instance.PlaySingle (gameOverSound);\n				\n				//Stop the background music.\n				SoundManager.instance.musicSource.Stop();\n				\n				//Call the GameOver function of GameManager.\n				GameManager.instance.GameOver ();\n			}\n		}\n	}\n\n\n",
 			"file": "Assets/Scripts/Player.cs",
+			"file_size": 12441,
+			"file_write_time": 130796754791453986,
 			"settings":
 			{
-				"buffer_size": 11946,
+				"buffer_size": 12588,
 				"line_ending": "Unix"
 			}
 		},
@@ -119,15 +130,18 @@
 			"file": "Assets/Scripts/Bolt.cs",
 			"settings":
 			{
-				"buffer_size": 558,
+				"buffer_size": 1120,
 				"line_ending": "Unix"
 			}
 		},
 		{
+			"contents": "using UnityEngine;\nusing System.Collections;\n\npublic abstract class MovingObject : MonoBehaviour {\n\n	public float moveTime = 0.1f;\n	public LayerMask blockingLayer;\n\n	private BoxCollider2D boxCollider;\n	private Rigidbody2D rb2D;\n	private float inverseMoveTime;\n\n	// Use this for initialization\n	protected virtual void Start ()\n	{\n		boxCollider = GetComponent<BoxCollider2D> ();\n		rb2D = GetComponent<Rigidbody2D> ();\n		inverseMoveTime = 1f / moveTime;\n	}\n\n	protected bool Move (int xDir, int yDir, out RaycastHit2D hit)\n	{\n		Vector2 start = transform.position;\n		Vector2 end = start + new Vector2 (xDir, yDir);\n		//print(\"boxCollider.enabled=false\");\n		boxCollider.enabled = false;\n		//print(\"Physics2D\");\n		hit = Physics2D.Linecast (start, end, blockingLayer);\n		//print(\"boxCollider.enabled=true\");\n		boxCollider.enabled = true;\n		//print(\"bool Move, before SmoothMovement\");\n		if (hit.transform == null)\n		{\n			print(hit.transform);\n			StartCoroutine(SmoothMovement (end));\n			return true;\n		}\n\n		return false;\n	}\n\n	protected IEnumerator SmoothMovement (Vector3 end)\n	{\n		//print(\"In SmoothMovement\");\n		float sqrRemainingDistance = (transform.position - end).sqrMagnitude;\n\n		while (sqrRemainingDistance > float.Epsilon)\n		{\n			Vector3 newPosition = Vector3.MoveTowards (rb2D.position, end, inverseMoveTime * Time.deltaTime);\n			rb2D.MovePosition(newPosition);\n			sqrRemainingDistance = (transform.position - end).sqrMagnitude;\n			yield return null;\n		}\n	}\n\n	protected virtual void AttemptMove <T> (int xDir, int yDir)\n		where T : Component\n	{\n		//print(\"void AttemptMove\");\n		RaycastHit2D hit;\n		bool canMove = Move(xDir, yDir, out hit);\n\n		if (hit.transform == null)\n			return;\n\n		T hitComponent = hit.transform.GetComponent<T>();\n\n		if (!canMove && hitComponent != null)\n			OnCantMove(hitComponent);\n	}\n\n	protected abstract void OnCantMove <T> (T component)\n		where T : Component;\n }",
 			"file": "Assets/Scripts/MovingObject.cs",
+			"file_size": 1880,
+			"file_write_time": 130796266266061932,
 			"settings":
 			{
-				"buffer_size": 1653,
+				"buffer_size": 1889,
 				"line_ending": "Unix"
 			}
 		},
@@ -137,6 +151,16 @@
 			{
 				"buffer_size": 1205,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 19 files for \"AttemptMove\"\n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\Bolt.cs:\n   13  	}\n   14  \n   15: 	protected override void AttemptMove <T> (int xDir, int yDir)\n   16  	{\n   17: 		base.AttemptMove <T> (xDir, yDir);\n   18  	}\n   19  \n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\Enemy.cs:\n   21  	}\n   22  \n   23: 	protected override void AttemptMove <T> (int xDir, int yDir)\n   24  	{\n   25  		if (skipMove) \n   ..\n   29  		}\n   30  \n   31: 		base.AttemptMove <T> (xDir, yDir);\n   32  \n   33  		skipMove = true;\n   ..\n   44  			xDir = target.position.x > transform.position.x ? 1 : -1;\n   45  \n   46: 		AttemptMove <Player> (xDir, yDir);\n   47  	}\n   48  \n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\MovingObject.cs:\n   50  	}\n   51  \n   52: 	protected virtual void AttemptMove <T> (int xDir, int yDir)\n   53  		where T : Component\n   54  	{\n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\Player.cs:\n  128  			if(horizontal != 0 || vertical != 0)\n  129  			{\n  130: 				//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)\n  131  				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.\n  132: 				AttemptMove<Wall> (horizontal, vertical);\n  133  			}\n  134  			//Keyboard Input gathered for special ability(ies)\n  ...\n  141  				Instantiate(bolt, new Vector3 (boltSpawn.x + 1, boltSpawn.y + 1, 0f) , Quaternion.identity);\n  142  \n  143: 				//Bolt.AttemptMove<Wall> (xDir, yDir);\n  144  \n  145  				//Ensuring that the turn ends for the player's chosen action\n  ...\n  156  \n  157  		\n  158: 		//AttemptMove overrides the AttemptMove function in the base class MovingObject\n  159: 		//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.\n  160: 		protected override void AttemptMove <T> (int xDir, int yDir)\n  161  		{\n  162  			//Every time player moves, subtract from food points total.\n  ...\n  166  			foodText.text = \"Food: \" + food;\n  167  			\n  168: 			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.\n  169: 			base.AttemptMove <T> (xDir, yDir);\n  170  			\n  171  			//Hit allows us to reference the result of the Linecast done in Move.\n\n15 matches across 4 files\n\n\nSearching 19 files for \"Enemy\"\n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\BoardManager.cs:\n   27  	public GameObject[] wallTiles;\n   28  	public GameObject[] foodTiles;\n   29: 	public GameObject[] enemyTiles;\n   30  	public GameObject[] outerWallTiles;\n   31  	public GameObject[] seasonTiles;\n   ..\n   93  		LayoutObjectAtRandom (wallTiles, wallCount.minimum, wallCount.maximum);\n   94  		LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);\n   95: 		int enemyCount = (int)Mathf.Log (level, 2f);\n   96: 		LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);\n   97  		Instantiate(seasonTrigger, new Vector3 (columns - 1, rows - 2, 0f), Quaternion.identity);\n   98  		Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);\n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\Bolt.cs:\n   26  	target()\n   27  	{\n   28: 		//Replace \"Player\" with clicking on enemy location. Keep that in mind for the future!\n   29  		target = GameObject.FindGameObjectWithTag (\"Player\").transform;\n   30  	}\n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\Enemy.cs:\n    2  using System.Collections;\n    3  \n    4: public class Enemy : MovingObject {\n    5  \n    6  	public int playerDamage;\n    .\n   10  	private bool skipMove;\n   11  \n   12: 	public AudioClip enemyAttack1;\n   13: 	public AudioClip enemyAttack2;\n   14  \n   15  	protected override void Start ()\n   16  	{\n   17: 		GameManager.instance.AddEnemyToList (this);\n   18  		animator = GetComponent<Animator> ();\n   19  		target = GameObject.FindGameObjectWithTag (\"Player\").transform;\n   ..\n   34  	}\n   35  \n   36: 	public void MoveEnemy()\n   37  	{\n   38  		int xDir = 0;\n   ..\n   51  		Player hitPlayer = component as Player;\n   52  \n   53: 		animator.SetTrigger (\"enemyAttack\");\n   54  \n   55: 		SoundManager.instance.RandomizeSfx(enemyAttack1, enemyAttack2);\n   56  \n   57  		hitPlayer.LoseFood (playerDamage);\n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\GameManager.cs:\n   17  	private GameObject levelImage;\n   18  	private int level = 1;\n   19: 	private List<Enemy> enemies;\n   20  	private bool enemiesMoving;\n   21  	private bool doingSetup;\n   ..\n   30  \n   31  		DontDestroyOnLoad (gameObject);\n   32: 		enemies = new List<Enemy> ();\n   33  		boardScript = GetComponent<BoardManager>();\n   34  		InitGame();\n   ..\n   87  	}\n   88  \n   89: 	public void AddEnemyToList(Enemy script)\n   90  	{\n   91  		enemies.Add (script);\n   ..\n  103  		for (int i = 0; i < enemies.Count; i++)\n  104  		{\n  105: 			enemies[i].MoveEnemy();\n  106  			yield return new WaitForSeconds(enemies[i].moveTime);\n  107  		}\n\nK:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts\\Player.cs:\n    3  using UnityEngine.UI;	//Allows us to use UI.\n    4  \n    5: 	//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.\n    6  	public class Player : MovingObject\n    7  	{\n    .\n  138  				print (\"Space Key was pressed!\");\n  139  \n  140: 				//Creating bolt gameObject that will travel to enemy (planning to change this soon)\n  141  				Instantiate(bolt, new Vector3 (boltSpawn.x + 1, boltSpawn.y + 1, 0f) , Quaternion.identity);\n  142  \n  ...\n  268  		\n  269  		\n  270: 		//LoseFood is called when an enemy attacks the player.\n  271  		//It takes a parameter loss which specifies how many points to lose.\n  272  		public void LoseFood (int loss)\n\n22 matches across 5 files\n",
+			"settings":
+			{
+				"buffer_size": 6072,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
 			}
 		},
 		{
@@ -232,6 +256,8 @@
 	},
 	"file_history":
 	[
+		"/K/Users/Muddledde/Documents/Unity Projects/Rogue-like Example/Assets/Scripts/Bolt.cs",
+		"/K/Users/Muddledde/Downloads/2DShooterPlus.zip",
 		"/K/Users/Muddledde/Documents/GitHub/sublime-text-2-csharp-build/sample_app/Main.cs",
 		"/K/Users/Muddledde/OneDrive/Documents/Sublime Projects/Roguelike 2D.sublime-project",
 		"/C/Users/Muddledde/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
@@ -256,6 +282,7 @@
 		"height": 0.0,
 		"where_history":
 		[
+			"K:\\Users\\Muddledde\\Documents\\Unity Projects\\Rogue-like Example\\Assets\\Scripts"
 		]
 	},
 	"find_state":
@@ -263,6 +290,30 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"instance",
+			"GetComponent",
+			"player",
+			"doingSetup",
+			"enemy",
+			"getcomponent",
+			"boltspawn",
+			"other",
+			"smoothmovement",
+			"smoothmove",
+			"instance",
+			"boardScript",
+			"enemies",
+			"Enemy",
+			"AttemptMove",
+			"food",
+			"Text",
+			"seasonText",
+			"\nseas",
+			"\nseasonCount",
+			"playerFoodPoints",
+			"Wall",
+			"MoveEnemy",
+			"AttemptMove",
 			"players",
 			"attempt",
 			"seasonTrigger",
@@ -308,7 +359,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -316,15 +367,15 @@
 					"file": "Assets/Scripts/GameManager.cs",
 					"settings":
 					{
-						"buffer_size": 2371,
+						"buffer_size": 2445,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1318,
-								1318
+								2073,
+								2073
 							]
 						],
 						"settings":
@@ -333,7 +384,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1620.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -343,15 +394,15 @@
 					"file": "Assets/Scripts/BoardManager.cs",
 					"settings":
 					{
-						"buffer_size": 2736,
+						"buffer_size": 2737,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1926,
-								1926
+								1481,
+								1489
 							]
 						],
 						"settings":
@@ -360,7 +411,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1368.0,
+						"translation.y": 959.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -370,15 +421,15 @@
 					"file": "Assets/Scripts/Player.cs",
 					"settings":
 					{
-						"buffer_size": 11946,
+						"buffer_size": 12588,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6222,
-								6222
+								6866,
+								6866
 							]
 						],
 						"settings":
@@ -387,7 +438,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2394.0,
+						"translation.y": 2700.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -397,23 +448,24 @@
 					"file": "Assets/Scripts/Bolt.cs",
 					"settings":
 					{
-						"buffer_size": 558,
+						"buffer_size": 1120,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								363,
-								363
+								935,
+								935
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Unity3D/UnityC#.tmLanguage"
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 240.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -423,15 +475,15 @@
 					"file": "Assets/Scripts/MovingObject.cs",
 					"settings":
 					{
-						"buffer_size": 1653,
+						"buffer_size": 1889,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1018,
-								1018
+								1577,
+								1577
 							]
 						],
 						"settings":
@@ -440,7 +492,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1020.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -457,35 +509,8 @@
 						"selection":
 						[
 							[
-								463,
-								463
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Unity3D/UnityC#.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 399.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "Assets/Scripts/Wall.cs",
-					"settings":
-					{
-						"buffer_size": 543,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								189,
-								189
+								337,
+								337
 							]
 						],
 						"settings":
@@ -500,7 +525,221 @@
 					"type": "text"
 				},
 				{
+					"buffer": 6,
+					"settings":
+					{
+						"buffer_size": 6072,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										175,
+										186
+									],
+									[
+										236,
+										247
+									],
+									[
+										423,
+										434
+									],
+									[
+										533,
+										544
+									],
+									[
+										688,
+										699
+									],
+									[
+										886,
+										897
+									],
+									[
+										1129,
+										1140
+									],
+									[
+										1378,
+										1389
+									],
+									[
+										1629,
+										1640
+									],
+									[
+										1776,
+										1787
+									],
+									[
+										1802,
+										1813
+									],
+									[
+										1865,
+										1876
+									],
+									[
+										2038,
+										2049
+									],
+									[
+										2237,
+										2248
+									],
+									[
+										2368,
+										2379
+									],
+									[
+										2751,
+										2756
+									],
+									[
+										3029,
+										3034
+									],
+									[
+										3101,
+										3106
+									],
+									[
+										3113,
+										3118
+									],
+									[
+										3125,
+										3130
+									],
+									[
+										3488,
+										3493
+									],
+									[
+										3771,
+										3776
+									],
+									[
+										3905,
+										3910
+									],
+									[
+										3944,
+										3949
+									],
+									[
+										4050,
+										4055
+									],
+									[
+										4238,
+										4243
+									],
+									[
+										4373,
+										4378
+									],
+									[
+										4440,
+										4445
+									],
+									[
+										4454,
+										4459
+									],
+									[
+										4707,
+										4712
+									],
+									[
+										4875,
+										4880
+									],
+									[
+										5007,
+										5012
+									],
+									[
+										5019,
+										5024
+									],
+									[
+										5165,
+										5170
+									],
+									[
+										5486,
+										5491
+									],
+									[
+										5687,
+										5692
+									],
+									[
+										5900,
+										5905
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								4938,
+								4938
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"output_tag": 2,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 60.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
 					"buffer": 7,
+					"file": "Assets/Scripts/Wall.cs",
+					"settings":
+					{
+						"buffer_size": 543,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								391,
+								399
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
 					"file": "Assets/Scripts/SoundManager.cs",
 					"settings":
 					{
@@ -511,8 +750,8 @@
 						"selection":
 						[
 							[
-								274,
-								274
+								156,
+								199
 							]
 						],
 						"settings":
